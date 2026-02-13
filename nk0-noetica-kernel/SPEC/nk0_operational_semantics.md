@@ -21,3 +21,7 @@ Invariant handling:
 - Violation V is computed by policy; NK-0 reference uses:
   V = 0 if all invariants true else 1
 This is intentionally minimal; richer V is an extension.
+
+Budget policy:
+- NK-0 defines B_k := module.budget (constant per module) in the reference kernel.
+- Extensions may add per-function or dynamic budgets, but MUST declare the policy.

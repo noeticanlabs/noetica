@@ -1,4 +1,4 @@
-import hashlib
+import ast
 from typing import Any, Dict, List, Tuple
 
 from nk0_ast import ModuleDef
@@ -6,12 +6,68 @@ from nk0_receipts import hash_obj, make_receipt, Receipt
 
 
 def _safe_eval(expr: str, env: Dict[str, Any]) -> Any:
-    return eval(expr, {"__builtins__": {}}, dict(env))
+    node = ast.parse(expr, mode="eval").body
+
+    def eval_node(n: ast.AST) -> Any:
+        if isinstance(n, ast.Constant):
+            return n.value
+        if isinstance(n, ast.Name):
+            if n.id not in env:
+                raise ValueError(f"unknown symbol: {n.id}")
+            return env[n.id]
+        if isinstance(n, ast.UnaryOp) and isinstance(n.op, (ast.UAdd, ast.USub)):
+            val = eval_node(n.operand)
+            if not isinstance(val, (int, float)):
+                raise ValueError("unary ops require Real")
+            return +val if isinstance(n.op, ast.UAdd) else -val
+        if isinstance(n, ast.BinOp) and isinstance(n.op, (ast.Add, ast.Sub, ast.Mult, ast.Div)):
+            left = eval_node(n.left)
+            right = eval_node(n.right)
+            if not isinstance(left, (int, float)) or not isinstance(right, (int, float)):
+                raise ValueError("arithmetic ops require Real")
+            if isinstance(n.op, ast.Add):
+                return left + right
+            if isinstance(n.op, ast.Sub):
+                return left - right
+            if isinstance(n.op, ast.Mult):
+                return left * right
+            return left / right
+        if isinstance(n, ast.Compare):
+            if len(n.ops) != 1 or len(n.comparators) != 1:
+                raise ValueError("unsupported compare")
+            left = eval_node(n.left)
+            right = eval_node(n.comparators[0])
+            op = n.ops[0]
+            if isinstance(op, ast.Eq):
+                return left == right
+            if not isinstance(left, (int, float)) or not isinstance(right, (int, float)):
+                raise ValueError("<= and >= require Real")
+            if isinstance(op, ast.LtE):
+                return left <= right
+            if isinstance(op, ast.GtE):
+                return left >= right
+        raise ValueError(f"unsupported expression: {expr}")
+
+    return eval_node(node)
 
 
 def _module_hash(module: ModuleDef) -> str:
-    source = f"{module.name}|{module.budget}|{len(module.functions)}"
-    return hashlib.sha256(source.encode("utf-8")).hexdigest()
+    data = {
+        "name": module.name,
+        "imports": module.imports,
+        "invariants": module.invariants,
+        "budget": module.budget,
+        "functions": [
+            {
+                "name": fn.name,
+                "params": fn.params,
+                "ret_type": fn.ret_type,
+                "body": fn.body,
+            }
+            for fn in module.functions
+        ],
+    }
+    return hash_obj(data)
 
 
 def _violation(module: ModuleDef, store: Dict[str, Any]) -> float:
@@ -43,7 +99,7 @@ def run_function(
             raise ValueError(f"missing argument: {name}")
         store[name] = args[name]
 
-    V_k = _violation(module, store)
+    V_k = V_prev
     result = None
 
     for stmt in fn.body:
@@ -54,7 +110,7 @@ def run_function(
             pred = stmt[len("assert "):].strip().rstrip(";")
             if not bool(_safe_eval(pred, store)):
                 V_k1 = 1.0
-                dV_k = max(0.0, V_k - V_prev)
+                dV_k = max(0.0, V_k1 - V_k)
                 D_k1 = max(0.0, D_k + dV_k - module.budget)
                 receipt = make_receipt(
                     {
@@ -70,6 +126,10 @@ def run_function(
                         "D_k1": D_k1,
                         "prev_receipt_hash": prev_receipt_hash,
                         "status": "FAILED_ASSERT",
+                        "error_code": "FAILED_ASSERT",
+                        "error_detail": "assertion failed",
+                        "spec_version": "0.1.0",
+                        "schema_version": "0.1.0",
                     }
                 )
                 return None, store, receipt
@@ -80,7 +140,7 @@ def run_function(
             raise ValueError(f"unsupported statement: {stmt}")
 
     V_k1 = _violation(module, store)
-    dV_k = max(0.0, V_k - V_prev)
+    dV_k = max(0.0, V_k1 - V_k)
     D_k1 = max(0.0, D_k + dV_k - module.budget)
 
     receipt = make_receipt(
@@ -97,6 +157,10 @@ def run_function(
             "D_k1": D_k1,
             "prev_receipt_hash": prev_receipt_hash,
             "status": "OK",
+            "error_code": "OK",
+            "error_detail": None,
+            "spec_version": "0.1.0",
+            "schema_version": "0.1.0",
         }
     )
     return result, store, receipt
@@ -122,5 +186,5 @@ def run_sequence(module: ModuleDef, fn_name: str, calls: List[Dict[str, Any]], i
         receipts.append(r)
         prev_hash = r.receipt_hash
         D_k = r.D_k1
-        V_prev = r.V_k
+        V_prev = r.V_k1
     return receipts

@@ -14,7 +14,11 @@
     "D_k",
     "D_k1",
     "prev_receipt_hash",
-    "receipt_hash"
+    "receipt_hash",
+    "status",
+    "error_code",
+    "spec_version",
+    "schema_version"
   ],
   "properties": {
     "step_id": {"type": "integer", "minimum": 0},
@@ -29,7 +33,11 @@
     "D_k1": {"type": "number", "minimum": 0},
     "prev_receipt_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "receipt_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-    "status": {"type": "string"}
+    "status": {"type": "string", "enum": ["OK", "FAILED_ASSERT", "INVALID_DEBT", "TYPE_ERROR", "PARSE_ERROR"]},
+    "error_code": {"type": "string", "minLength": 1},
+    "error_detail": {"type": "string"},
+    "spec_version": {"type": "string", "minLength": 1},
+    "schema_version": {"type": "string", "minLength": 1}
   },
   "additionalProperties": false
 }

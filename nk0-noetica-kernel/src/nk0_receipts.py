@@ -31,11 +31,20 @@ class Receipt:
     prev_receipt_hash: str
     receipt_hash: str
     status: str = "OK"
+    error_code: str = "OK"
+    error_detail: str | None = None
+    spec_version: str = "0.1.0"
+    schema_version: str = "0.1.0"
 
 
 def make_receipt(payload: Dict[str, Any]) -> Receipt:
     tmp = dict(payload)
     tmp.pop("receipt_hash", None)
+    payload.setdefault("status", "OK")
+    payload.setdefault("error_code", "OK")
+    payload.setdefault("error_detail", None)
+    payload.setdefault("spec_version", "0.1.0")
+    payload.setdefault("schema_version", "0.1.0")
     payload["receipt_hash"] = hash_obj(tmp)
     return Receipt(**payload)
 

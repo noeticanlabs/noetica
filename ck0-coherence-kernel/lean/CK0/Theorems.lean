@@ -21,3 +21,20 @@ theorem step_contraction
   linarith
 
 end CK0
+
+namespace CK0
+
+theorem debt_nonneg (Dk dVk Bk : ℝ) : 0 ≤ Dnext Dk dVk Bk := by
+  simp [Dnext]
+
+theorem debt_monotone_zero_budget (Dk dVk : ℝ) (hdv : 0 ≤ dVk) :
+  Dk ≤ Dnext Dk dVk 0 := by
+  have : Dk ≤ Dk + dVk := by linarith
+  have : Dk ≤ max 0 (Dk + dVk - 0) := by
+    have h1 : Dk ≤ Dk + dVk := by linarith
+    have h2 : Dk + dVk ≤ max 0 (Dk + dVk) := by
+      exact le_max_right _ _
+    exact le_trans h1 h2
+  simpa [Dnext] using this
+
+end CK0

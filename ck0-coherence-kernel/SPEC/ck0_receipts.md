@@ -1,11 +1,8 @@
 # CK-0 Receipts & Replay (Normative)
 
 ## Receipt chain
-Define canonical encoding enc(R) as deterministic JSON:
-- UTF-8
-- sorted keys
-- no whitespace
-- floats encoded with fixed rules (recommend: decimal string with max 17 sig figs)
+Define canonical encoding enc(R) as deterministic JSON (see canonicalization spec):
+- ../noetica-kernels/SPEC/canonicalization.md
 
 Define:
 h(R) := SHA-256(enc(R))
@@ -24,3 +21,11 @@ Replay is valid iff for all k:
 ## Canonical hash of state
 state_hash := SHA-256(canonical_bytes(state))
 Canonicalization MUST be declared (format + ordering).
+
+## Receipt status fields
+Receipts MUST include:
+- status: OK | FAILED_ASSERT | INVALID_DEBT | TYPE_ERROR | PARSE_ERROR
+- error_code: stable enum identifier
+- error_detail: optional string (non-normative)
+- spec_version: semantic version of the CK-0 spec
+- schema_version: semantic version of the receipt schema

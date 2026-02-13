@@ -30,6 +30,11 @@ class CK0Receipt:
     D_k1: float
     prev_receipt_hash: str
     receipt_hash: str
+    status: str
+    error_code: str
+    error_detail: str | None
+    spec_version: str
+    schema_version: str
 
 
 def compute_step(V_k: float, V_prev: float, E_k: float, C_k: float, B_k: float, D_k: float, is_first: bool) -> Dict[str, float]:
@@ -100,6 +105,11 @@ def simulate(initial_state: Dict[str, Any], plan: List[Dict[str, float]], d_max:
             "D_k": D_k,
             "D_k1": D_k1,
             "prev_receipt_hash": prev_hash,
+            "status": "OK",
+            "error_code": "OK",
+            "error_detail": None,
+            "spec_version": "0.1.0",
+            "schema_version": "0.1.0",
         }
         receipt = make_receipt(payload)
         receipts.append(receipt)
