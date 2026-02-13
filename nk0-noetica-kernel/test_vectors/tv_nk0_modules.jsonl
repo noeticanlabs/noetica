@@ -1,0 +1,2 @@
+{"module":"Hello","budget":1.0,"invariants":["x >= 0"],"functions":[{"name":"add","params":[["x","Real"],["y","Real"]],"ret":"Real"}]}
+{"module":"Gate","budget":0.5,"invariants":["value >= 0"],"functions":[{"name":"step","params":[["value","Real"],["delta","Real"]],"ret":"Real"}]}

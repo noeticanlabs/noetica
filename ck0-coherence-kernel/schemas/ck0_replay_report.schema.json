@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CK0 Replay Report",
+  "type": "object",
+  "required": ["ok", "message", "steps_checked"],
+  "properties": {
+    "ok": {"type": "boolean"},
+    "message": {"type": "string"},
+    "steps_checked": {"type": "integer", "minimum": 0},
+    "failed_step": {"type": ["integer", "null"], "minimum": 0},
+    "invalidation_triggered": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

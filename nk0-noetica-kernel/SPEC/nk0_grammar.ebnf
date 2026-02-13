@@ -1,0 +1,30 @@
+module      = "module" ident "{" { import } { decl } "}" ;
+import      = "import" ident ";" ;
+
+decl        = invariant | budget | function ;
+
+invariant   = "invariant" expr ";" ;
+budget      = "budget" number ";" ;
+
+function    = "fn" ident "(" [ params ] ")" "->" type block ;
+params      = param { "," param } ;
+param       = ident ":" type ;
+
+block       = "{" { stmt } "}" ;
+stmt        = letstmt | returnstmt | assertstmt ";" ;
+letstmt     = "let" ident "=" expr ";" ;
+returnstmt  = "return" expr ";" ;
+assertstmt  = "assert" expr ;
+
+expr        = call | binop | atom ;
+call        = ident "(" [ args ] ")" ;
+args        = expr { "," expr } ;
+binop       = atom op atom ;
+atom        = ident | number | string | "true" | "false" | "(" expr ")" ;
+
+type        = "Real" | "Bool" | "State" | "Field" ;
+
+op          = "+" | "-" | "*" | "/" | "==" | "<=" | ">=" ;
+ident       = letter { letter | digit | "_" } ;
+number      = ["-"] digit {digit} ["." digit {digit}] ;
+string      = '"' { char } '"' ;

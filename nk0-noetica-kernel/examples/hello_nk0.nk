@@ -1,0 +1,10 @@
+module Hello {
+  budget 1.0;
+  invariant x >= 0;
+
+  fn add(x: Real, y: Real) -> Real {
+    let z = x + y;
+    assert z >= 0;
+    return z;
+  }
+}

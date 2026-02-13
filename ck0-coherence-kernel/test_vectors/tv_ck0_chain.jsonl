@@ -1,0 +1,2 @@
+{"step_id":0,"rule_id":"tv.rule","prev_receipt_hash":"0000000000000000000000000000000000000000000000000000000000000000"}
+{"step_id":1,"rule_id":"tv.rule","prev_receipt_hash":"follows_receipt_hash_of_previous"}

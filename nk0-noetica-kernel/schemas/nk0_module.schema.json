@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NK0 Module",
+  "type": "object",
+  "required": ["module", "budget", "invariants", "functions"],
+  "properties": {
+    "module": {"type": "string", "minLength": 1},
+    "imports": {"type": "array", "items": {"type": "string"}, "default": []},
+    "budget": {"type": "number", "minimum": 0},
+    "invariants": {"type": "array", "items": {"type": "string"}},
+    "functions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "params", "ret"],
+        "properties": {
+          "name": {"type": "string"},
+          "params": {"type": "array"},
+          "ret": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,10 @@
+module Gate {
+  budget 0.5;
+  invariant value >= 0;
+
+  fn step(value: Real, delta: Real) -> Real {
+    let next = value + delta;
+    assert next >= 0;
+    return next;
+  }
+}
