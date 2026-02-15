@@ -1,0 +1,32 @@
+{
+  "module": {
+    "name": "function_call_test",
+    "imports": [],
+    "invariants": [],
+    "budget": 1.0,
+    "functions": [
+      {
+        "name": "add",
+        "params": [["a", "Real"], ["b", "Real"]],
+        "ret_type": "Real",
+        "body": [
+          "let sum = a + b",
+          "return sum"
+        ]
+      },
+      {
+        "name": "main",
+        "params": [],
+        "ret_type": "Real",
+        "body": [
+          "let result = add(2, 3)",
+          "return result"
+        ]
+      }
+    ]
+  },
+  "initial_store": {},
+  "calls": [
+    {}
+  ]
+}

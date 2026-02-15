@@ -1,0 +1,28 @@
+{
+  "receipts": [
+    {
+      "step_id": 0,
+      "rule_id": "auto-computed",
+      "input_hash": "auto-computed",
+      "output_hash": "auto-computed",
+      "V_k": 0.0,
+      "V_k1": 0.0,
+      "dV_k": 0.0,
+      "B_k": 1.0,
+      "D_k": 0.0,
+      "D_k1": 0.0,
+      "prev_receipt_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "status": "OK",
+      "error_code": "OK",
+      "error_detail": null,
+      "spec_version": "1.0.0",
+      "schema_version": "1.0.0"
+    }
+  ],
+  "final_state_hash": "auto-computed",
+  "replay_report": {
+    "replay_success": true,
+    "hash_match": true,
+    "steps_verified": 1
+  }
+}

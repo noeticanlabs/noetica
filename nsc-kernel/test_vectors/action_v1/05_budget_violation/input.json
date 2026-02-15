@@ -1,0 +1,24 @@
+{
+  "module": {
+    "name": "budget_violation_test",
+    "imports": [],
+    "invariants": [],
+    "budget": 0.5,
+    "functions": [
+      {
+        "name": "main",
+        "params": [],
+        "ret_type": "Int",
+        "body": [
+          "let x = 5",
+          "assert x < 0",
+          "return x"
+        ]
+      }
+    ]
+  },
+  "initial_store": {},
+  "calls": [
+    {}
+  ]
+}

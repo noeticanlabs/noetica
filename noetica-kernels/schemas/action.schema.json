@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Noetica Action",
+  "description": "Action object for Noetica -> NSC communication (Action Algebra v1.0)",
+  "type": "object",
+  "required": ["type"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["WRITE", "CALL", "ASSERT", "REPAIR", "SOLVE", "MEASURE"],
+      "description": "Action type determining the operation"
+    },
+    "var": {
+      "type": "string",
+      "description": "Variable name (for WRITE actions)"
+    },
+    "value": {
+      "description": "Value to write (for WRITE actions)"
+    },
+    "op_id": {
+      "type": "string",
+      "description": "Operation identifier (for CALL actions)"
+    },
+    "args": {
+      "type": "array",
+      "description": "Operation arguments (for CALL actions)",
+      "items": {}
+    },
+    "pred": {
+      "type": "string",
+      "description": "Predicate expression (for ASSERT actions)"
+    },
+    "hint": {
+      "type": "string",
+      "description": "Repair hint (for REPAIR actions)"
+    },
+    "residual_id": {
+      "type": "string",
+      "description": "Residual identifier (for SOLVE actions)"
+    },
+    "params": {
+      "type": "object",
+      "description": "Solver/measurement parameters (for SOLVE/MEASURE actions)"
+    },
+    "metric_id": {
+      "type": "string",
+      "description": "Metric identifier (for MEASURE actions)"
+    },
+    "step_id": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Sequence number for deterministic ordering"
+    },
+    "nonce": {
+      "type": "string",
+      "pattern": "^step_[0-9]+$",
+      "description": "Deterministic nonce derived from step_id"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"type": {"const": "WRITE"}},
+        "required": ["type"]
+      },
+      "then": {
+        "required": ["var", "value"]
+      }
+    },
+    {
+      "if": {
+        "properties": {"type": {"const": "CALL"}},
+        "required": ["type"]
+      },
+      "then": {
+        "required": ["op_id", "args"]
+      }
+    },
+    {
+      "if": {
+        "properties": {"type": {"const": "ASSERT"}},
+        "required": ["type"]
+      },
+      "then": {
+        "required": ["pred"]
+      }
+    },
+    {
+      "if": {
+        "properties": {"type": {"const": "REPAIR"}},
+        "required": ["type"]
+      },
+      "then": {
+        "required": ["hint"]
+      }
+    },
+    {
+      "if": {
+        "properties": {"type": {"const": "SOLVE"}},
+        "required": ["type"]
+      },
+      "then": {
+        "required": ["residual_id", "params"]
+      }
+    },
+    {
+      "if": {
+        "properties": {"type": {"const": "MEASURE"}},
+        "required": ["type"]
+      },
+      "then": {
+        "required": ["metric_id", "params"]
+      }
+    }
+  ],
+  "additionalProperties": false
+}

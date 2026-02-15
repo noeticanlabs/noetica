@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "description": "Cross-kernel golden vectors for Noetica integration testing",
+  "created": "2026-02-15T00:00:00Z",
+  "action_algebra_version": "1.0",
+  "receipt_schema_version": "1.0",
+  "test_cases": [
+    {
+      "id": "01_nk0_simple",
+      "name": "NK0 Simple Execution",
+      "description": "Basic Noetica kernel execution",
+      "expected_status": "OK"
+    },
+    {
+      "id": "02_nk0_receipt_chain",
+      "name": "NK0 Receipt Chain",
+      "description": "Multi-step receipt chain verification",
+      "expected_status": "OK"
+    },
+    {
+      "id": "03_nsc_governance",
+      "name": "NSC Governance",
+      "description": "NSC contract enforcement",
+      "expected_status": "OK"
+    },
+    {
+      "id": "04_ck0_coherence",
+      "name": "CK0 Coherence",
+      "description": "Coherence kernel integration",
+      "expected_status": "OK"
+    },
+    {
+      "id": "05_full_pipeline",
+      "name": "Full Pipeline",
+      "description": "End-to-end Noetica → NK0 → NSC → CK0",
+      "expected_status": "OK"
+    }
+  ]
+}

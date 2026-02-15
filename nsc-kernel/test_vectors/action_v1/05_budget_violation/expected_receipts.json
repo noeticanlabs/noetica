@@ -1,0 +1,29 @@
+{
+  "receipts": [
+    {
+      "step_id": 0,
+      "rule_id": "auto-computed",
+      "input_hash": "auto-computed",
+      "output_hash": "auto-computed",
+      "V_k": 0.0,
+      "V_k1": 1.0,
+      "dV_k": 1.0,
+      "B_k": 0.5,
+      "D_k": 0.0,
+      "D_k1": 0.5,
+      "prev_receipt_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "status": "FAILED_ASSERT",
+      "error_code": "FAILED_ASSERT",
+      "error_detail": "assertion failed",
+      "spec_version": "1.0.0",
+      "schema_version": "1.0.0"
+    }
+  ],
+  "final_state_hash": "auto-computed",
+  "replay_report": {
+    "replay_success": false,
+    "hash_match": false,
+    "steps_verified": 0,
+    "error": "assertion failed at step 0"
+  }
+}

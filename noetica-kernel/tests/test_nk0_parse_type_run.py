@@ -5,9 +5,9 @@ import unittest
 ROOT = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(os.path.join(ROOT, "src"))
 
-from nk0_parser import parse_module
-from nk0_typecheck import typecheck_module
-from nk0_runtime import run_function
+from noetica_parser import parse_module
+from noetica_typecheck import typecheck_module
+from nsc_kernel.nsc_runtime import run_function
 
 
 class TestNK0ParseTypeRun(unittest.TestCase):

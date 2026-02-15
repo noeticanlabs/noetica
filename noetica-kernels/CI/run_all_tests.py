@@ -19,8 +19,9 @@ def main() -> int:
         root / "noetica-kernel" / "tests" / "test_nk0_replay.py",
         root / "noetica-kernel" / "tests" / "test_nk0_negative_cases.py",
     ]
-    # NSC kernel tests will be added when implemented
-    nsc_tests = []
+    nsc_tests = [
+        root / "nsc-kernel" / "tests" / "test_golden_vectors.py",
+    ]
 
     all_tests = coherence_tests + noetica_tests + nsc_tests
     missing = [p for p in all_tests if not p.exists()]

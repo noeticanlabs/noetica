@@ -1,0 +1,24 @@
+{
+  "module": {
+    "name": "assert_fail_test",
+    "imports": [],
+    "invariants": [],
+    "budget": 1.0,
+    "functions": [
+      {
+        "name": "main",
+        "params": [],
+        "ret_type": "Int",
+        "body": [
+          "let x = 5",
+          "assert x < 0",
+          "return x"
+        ]
+      }
+    ]
+  },
+  "initial_store": {},
+  "calls": [
+    {}
+  ]
+}

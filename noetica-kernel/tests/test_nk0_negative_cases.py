@@ -5,9 +5,9 @@ import unittest
 ROOT = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(os.path.join(ROOT, "src"))
 
-from nk0_parser import parse_module
-from nk0_runtime import run_function
-from nk0_replay import replay_and_verify
+from noetica_parser import parse_module
+from nsc_kernel.nsc_runtime import run_function
+from nsc_kernel.nsc_replay import replay_and_verify
 
 
 class TestNK0NegativeCases(unittest.TestCase):

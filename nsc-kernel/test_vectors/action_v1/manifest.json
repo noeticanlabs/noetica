@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "description": "Golden vectors for NSC kernel ABI replay verification",
+  "created": "2026-02-15T00:00:00Z",
+  "action_algebra_version": "1.0",
+  "receipt_schema_version": "1.0",
+  "test_cases": [
+    {
+      "id": "01_simple_write",
+      "name": "Simple Write",
+      "description": "Basic variable assignment (let statement)",
+      "expected_status": "OK"
+    },
+    {
+      "id": "02_function_call",
+      "name": "Function Call",
+      "description": "Calling a defined function within let statement",
+      "expected_status": "OK"
+    },
+    {
+      "id": "03_assert_pass",
+      "name": "Assert Pass",
+      "description": "Assertion that passes, state unchanged",
+      "expected_status": "OK"
+    },
+    {
+      "id": "04_assert_fail",
+      "name": "Assert Fail",
+      "description": "Assertion that fails, contract violation",
+      "expected_status": "FAILED_ASSERT"
+    },
+    {
+      "id": "05_budget_violation",
+      "name": "Budget Violation",
+      "description": "Debt exceeds budget, execution aborted",
+      "expected_status": "BUDGET_EXCEEDED"
+    }
+  ]
+}

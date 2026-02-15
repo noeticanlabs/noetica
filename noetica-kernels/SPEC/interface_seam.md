@@ -179,6 +179,14 @@ Breaking changes require version bump.
 
 ## Normative References
 
+- `../schemas/action.schema.json` - JSON Schema for actions (Action Algebra v1.0)
+- `action_algebra.md` - Action Algebra specification (canonicalization, determinism)
 - `nsc-kernel/SPEC/nsc_spec.md` - NSC execution semantics
 - `noetica-kernel/SPEC/noetica_spec.md` - Noetica semantics
 - `coherence-kernel/SPEC/ck0_spec.md` - Coherence mathematics
+
+---
+
+## Action Schema
+
+All actions MUST validate against `../schemas/action.schema.json` and conform to the canonicalization rules in `action_algebra.md`.
