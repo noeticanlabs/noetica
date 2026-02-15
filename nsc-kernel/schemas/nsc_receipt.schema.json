@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NSC Receipt",
+  "description": "Tamper-evident receipt for NSC execution steps",
+  "type": "object",
+  "required": [
+    "receipt_id",
+    "prev",
+    "curr",
+    "step_index",
+    "timestamp",
+    "action",
+    "canonical_state"
+  ],
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "pattern": "^R_[0-9]+$",
+      "description": "Unique identifier (format: R_k)"
+    },
+    "prev": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$|^GENESIS$",
+      "description": "Previous receipt hash or GENESIS for first receipt"
+    },
+    "curr": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Self-hash of this receipt"
+    },
+    "step_index": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Step number in execution"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp"
+    },
+    "action": {
+      "type": "object",
+      "description": "Executed action from Noetica",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {"const": "WRITE"},
+            "var": {"type": "string"},
+            "value": {}
+          },
+          "required": ["type", "var", "value"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {"const": "CALL"},
+            "op_id": {"type": "string"},
+            "args": {"type": "array"}
+          },
+          "required": ["type", "op_id", "args"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {"const": "ASSERT"},
+            "pred": {"type": "string"}
+          },
+          "required": ["type", "pred"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {"const": "REPAIR"},
+            "hint": {"type": "string"}
+          },
+          "required": ["type", "hint"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {"const": "SOLVE"},
+            "residual_id": {"type": "string"},
+            "params": {"type": "object"}
+          },
+          "required": ["type", "residual_id", "params"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {"const": "MEASURE"},
+            "metric_id": {"type": "string"},
+            "params": {"type": "object"}
+          },
+          "required": ["type", "metric_id", "params"]
+        }
+      ]
+    },
+    "state_delta": {
+      "type": "object",
+      "description": "State changes from this step"
+    },
+    "governance": {
+      "type": "object",
+      "description": "Governance state at this step",
+      "properties": {
+        "budget": {
+          "type": "object",
+          "properties": {
+            "steps": {"type": "integer", "minimum": 0},
+            "energy": {"type": "number", "minimum": 0}
+          }
+        },
+        "debt": {
+          "type": "object",
+          "properties": {
+            "value": {"type": "number", "minimum": 0},
+            "source": {"type": "string", "enum": ["local", "certified"]}
+          }
+        },
+        "rail_mode": {
+          "type": "string",
+          "enum": ["reject", "project", "none"]
+        },
+        "contract_level": {
+          "type": "string",
+          "enum": ["L0", "L1", "L2"]
+        }
+      }
+    },
+    "canonical_state": {
+      "type": "string",
+      "description": "Canonicalized state snapshot (bytes as base64)"
+    },
+    "rail_enforcement": {
+      "type": "object",
+      "description": "Rail enforcement details (if applicable)",
+      "properties": {
+        "mode": {"type": "string", "enum": ["reject", "project"]},
+        "original_action": {},
+        "projected_action": {},
+        "projection_function": {"type": "string"}
+      }
+    },
+    "spec_version": {
+      "type": "string",
+      "description": "NSC specification version"
+    },
+    "schema_version": {
+      "type": "string",
+      "description": "Receipt schema version"
+    }
+  },
+  "additionalProperties": false
+}

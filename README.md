@@ -1,17 +1,20 @@
 # Noetica
 
-This repository ships two minimal kernel packages with clean boundaries:
+This repository ships three minimal kernel packages with clean boundaries:
 
-- CK-0: a governance-grade coherence contract (spec + Lean core + receipts)
-- NK-0: a deterministic execution kernel with receipts and replay
+- **NSC** (Deterministic Governed Execution Substrate) - runtime execution, receipts, replay, contracts
+- **Noetica** (Semantic Language Kernel) - glyphs → AST → types → action emission
+- **Coherence** (Certified Debt Governance) - mathematical certification of debt bounds
 
-The normative bridge between the two is documented in
-[noetica-kernels/SPEC/kernel_contract.md](noetica-kernels/SPEC/kernel_contract.md).
+The normative bridge between the three is documented in:
+- [noetica-kernels/SPEC/kernel_contract.md](noetica-kernels/SPEC/kernel_contract.md)
+- [noetica-kernels/SPEC/interface_seam.md](noetica-kernels/SPEC/interface_seam.md)
 
 ## Package map
 
-- [ck0-coherence-kernel](ck0-coherence-kernel) (spec, schemas, Lean core, Python model)
-- [nk0-noetica-kernel](nk0-noetica-kernel) (grammar, typing, runtime, receipts, replay)
+- [nsc-kernel](nsc-kernel) (execution substrate, receipts, replay, contracts)
+- [noetica-kernel](noetica-kernel) (semantic kernel, grammar, typing, runtime)
+- [coherence-kernel](coherence-kernel) (certified debt governance, mathematical spec)
 - [noetica-kernels](noetica-kernels) (combined contract spine and CI)
 
 ## Run tests
@@ -19,9 +22,9 @@ The normative bridge between the two is documented in
 From the repo root:
 
 ```bash
-python ck0-coherence-kernel/tests/test_ck0_reference_model.py
-python nk0-noetica-kernel/tests/test_nk0_parse_type_run.py
-python nk0-noetica-kernel/tests/test_nk0_replay.py
+python coherence-kernel/tests/test_ck0_reference_model.py
+python noetica-kernel/tests/test_nk0_parse_type_run.py
+python noetica-kernel/tests/test_nk0_replay.py
 ```
 
 Or run the combined script:
@@ -36,8 +39,24 @@ Single command:
 make test
 ```
 
+## Architecture
+
+```
+Noetica (Semantic Kernel)
+    │
+    │ Action stream
+    ▼
+NSC (Execution Substrate)
+    │
+    │ Certification requests
+    ▼
+Coherence (Certified Debt)
+```
+
 ## Conformance
 
-CK-0 defines the recurrence laws, debt, and invalidation requirements.
-NK-0 defines the deterministic execution substrate and receipt/replay obligations.
-Implementations must satisfy both to claim conformance.
+A system conforms to Noetica if it implements all three kernels:
+
+- **Noetica** defines meaning (glyphs → typed actions)
+- **NSC** defines execution (deterministic, audited, governed)
+- **Coherence** defines certification (debt bounds, Lyapunov stability)

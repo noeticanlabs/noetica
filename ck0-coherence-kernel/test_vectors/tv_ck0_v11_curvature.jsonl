@@ -1,0 +1,18 @@
+{"test_id":"curvature_001","description":"Curvature computation with identity G0","spec_version":"1.1","input":{"x":[1.0,0.0,0.0],"G0":[[1,0,0],[0,1,0],[0,0,1]],"J":[[2.0,0,0],[0,1,0]],"W":[[1,0],[0,1]]},"expected":{"kappa":0.693147,"lambda_max_tilde":1.0}}
+{"test_id":"curvature_002","description":"Curvature with scaled G0","spec_version":"1.1","input":{"x":[1.0,0.0,0.0],"G0":[[4,0,0],[0,4,0],[0,0,4]],"J":[[2.0,0,0],[0,1,0]],"W":[[1,0],[0,1]]},"expected":{"kappa":0.693147,"lambda_max_tilde":1.0}}
+{"test_id":"curvature_003","description":"Zero curvature at solution","spec_version":"1.1","input":{"x":[1.0,1.0,0.0],"G0":[[1,0,0],[0,1,0],[0,0,1]],"J":[[2.0,1,0],[1,1,0]],"W":[[1,0],[0,1]]},"expected":{"kappa":0.0,"lambda_max_tilde":0.0}}
+{"test_id":"budget_001","description":"Budget law verification","spec_version":"1.1","input":{"b_min":1.0,"eta":0.5,"kappa":2.0},"expected":{"min_budget":2.0,"verified":true}}
+{"test_id":"budget_002","description":"Budget with zero curvature","spec_version":"1.1","input":{"b_min":1.0,"eta":1.0,"kappa":0.0},"expected":{"min_budget":1.0,"verified":true}}
+{"test_id":"budget_003","description":"Budget violation detected","spec_version":"1.1","input":{"b_min":1.0,"eta":1.0,"kappa":2.0,"provided_budget":2.5},"expected":{"min_budget":3.0,"verified":false}}
+{"test_id":"perturbation_001","description":"Perturbation bound computation","spec_version":"1.1","input":{"Cx":1.0,"gamma":1.0,"budget":2.0},"expected":{"epsilon":0.5}}
+{"test_id":"perturbation_002","description":"Perturbation bound with gamma=2","spec_version":"1.1","input":{"Cx":4.0,"gamma":2.0,"budget":2.0},"expected":{"epsilon":1.0}}
+{"test_id":"perturbation_003","description":"Perturbation bound at zero budget (infinity)","spec_version":"1.1","input":{"Cx":1.0,"gamma":1.0,"budget":0.0},"expected":{"epsilon":"infinity"}}
+{"test_id":"debt_001","description":"Debt accumulation with curvature weight","spec_version":"1.1","input":{"phi_curr":0.5,"phi_next":0.7,"kappa":1.0,"D_prev":0.0},"expected":{"instantaneous":0.2,"accumulated":0.4}}
+{"test_id":"debt_002","description":"Debt with negative energy change","spec_version":"1.1","input":{"phi_curr":0.7,"phi_next":0.5,"kappa":1.0,"D_prev":1.0},"expected":{"instantaneous":0.0,"accumulated":1.0}}
+{"test_id":"debt_003","description":"Debt without curvature weighting","spec_version":"1.1","input":{"phi_curr":0.5,"phi_next":0.7,"kappa":0.0,"D_prev":0.0,"curvature_weighted":false},"expected":{"instantaneous":0.2,"accumulated":0.2}}
+{"test_id":"ctd_001","description":"CTD timestep computation","spec_version":"1.1","input":{"delta_tau":0.1,"mu":1.0,"kappa":0.0},"expected":{"dt":0.1}}
+{"test_id":"ctd_002","description":"CTD with high curvature","spec_version":"1.1","input":{"delta_tau":0.1,"mu":1.0,"kappa":1.0},"expected":{"dt":0.05}}
+{"test_id":"ctd_003","description":"CTD monotonicity check","spec_version":"1.1","input":{"delta_tau":0.1,"mu":1.0,"kappa_high":10.0,"kappa_low":0.0},"expected":{"dt_high":0.00909,"dt_low":0.1,"dt_high_lt_dt_low":true}}
+{"test_id":"stability_001","description":"Stability condition satisfied","spec_version":"1.1","input":{"delta":0.5,"K1":0.1,"K2":0.1,"dt":0.01,"perturbation":0.001,"grad_norm_sq":1.0},"expected":{"is_stable":true,"error_sum":0.000101,"rhs_threshold":0.25}}
+{"test_id":"stability_002","description":"Stability condition violated","spec_version":"1.1","input":{"delta":0.1,"K1":1.0,"K2":1.0,"dt":1.0,"perturbation":0.5,"grad_norm_sq":0.01},"expected":{"is_stable":false,"error_sum":1.25,"rhs_threshold":0.0005}}
+{"test_id":"kernel_001","description":"Full kernel state computation","spec_version":"1.1","input":{"x":[0.5,0.5,0.5],"b_min":1.0,"eta":1.0,"mu":1.0,"delta_tau":0.1,"Cx":1.0,"gamma":1.0},"expected":{"phi":0.625,"kappa_min":0.0}}

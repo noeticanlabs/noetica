@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CK0 Receipt v1.1",
+  "description": "Extended receipt schema for Coherence Kernel v1.1 with curvature-aware fields",
+  "type": "object",
+  "required": [
+    "step_id",
+    "rule_id",
+    "input_hash",
+    "output_hash",
+    "V_k",
+    "V_k1",
+    "dV_k",
+    "B_k",
+    "D_k",
+    "D_k1",
+    "kappa",
+    "phi",
+    "phi_next",
+    "dt",
+    "perturbation_bound",
+    "prev_receipt_hash",
+    "receipt_hash",
+    "status",
+    "error_code",
+    "spec_version",
+    "schema_version"
+  ],
+  "properties": {
+    "step_id": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Step identifier"
+    },
+    "rule_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Identifier of the rule/module used"
+    },
+    "input_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 hash of input state"
+    },
+    "output_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 hash of output state"
+    },
+    "V_k": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Violation magnitude at step k (v1.0 field)"
+    },
+    "V_k1": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Violation magnitude at step k+1 (v1.0 field)"
+    },
+    "dV_k": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Incremental violation (v1.0 field)"
+    },
+    "B_k": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Budget at step k (v1.0 field)"
+    },
+    "D_k": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Accumulated debt at step k (v1.0 field)"
+    },
+    "D_k1": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Accumulated debt at step k+1 (v1.0 field)"
+    },
+    "kappa": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Curvature scalar κ(x_n) - coordinate-stable definition"
+    },
+    "phi": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Coherence energy Φ(x_n) at step n"
+    },
+    "phi_next": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Coherence energy Φ(x_{n+1}) at step n+1"
+    },
+    "dt": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "CTD time step Δt_n = Δτ / (1 + μκ)"
+    },
+    "perturbation_bound": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Certified perturbation bound ε_x(b_n)"
+    },
+    "prev_receipt_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 hash of previous receipt for chain integrity"
+    },
+    "receipt_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 hash of this receipt"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["OK", "FAILED_ASSERT", "INVALID_DEBT", "TYPE_ERROR", "PARSE_ERROR", "BUDGET_VIOLATION", "STABILITY_VIOLATION"],
+      "description": "Execution status"
+    },
+    "error_code": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Error code if status is not OK"
+    },
+    "error_detail": {
+      "type": "string",
+      "description": "Detailed error information"
+    },
+    "spec_version": {
+      "type": "string",
+      "const": "1.1",
+      "description": "Specification version - must be 1.1"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.1",
+      "description": "Schema version - must be 1.1"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp (optional, non-normative for replay)"
+    },
+    "certified_bounds": {
+      "type": "object",
+      "description": "Certified bounds used for this step",
+      "properties": {
+        "Cx": {"type": "number", "minimum": 0},
+        "gamma": {"type": "number", "minimum": 0},
+        "b_min": {"type": "number", "minimum": 0},
+        "eta": {"type": "number", "minimum": 0},
+        "mu": {"type": "number", "minimum": 0}
+      }
+    },
+    "stability_info": {
+      "type": "object",
+      "description": "Stability verification information",
+      "properties": {
+        "is_stable": {"type": "boolean"},
+        "truncation_term": {"type": "number"},
+        "perturbation_term": {"type": "number"},
+        "rhs_threshold": {"type": "number"}
+      }
+    }
+  },
+  "additionalProperties": false
+}

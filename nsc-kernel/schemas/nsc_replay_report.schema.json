@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NSC Replay Report",
+  "description": "Report from replay verification of NSC execution",
+  "type": "object",
+  "required": [
+    "replay_id",
+    "original_receipts",
+    "action_stream",
+    "result"
+  ],
+  "properties": {
+    "replay_id": {
+      "type": "string",
+      "description": "Unique identifier for this replay"
+    },
+    "original_receipts": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "List of original receipt hashes"
+    },
+    "action_stream": {
+      "type": "array",
+      "description": "Action stream used for replay"
+    },
+    "registry_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Registry digest at genesis (for lock verification)"
+    },
+    "genesis_state_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Genesis state hash"
+    },
+    "result": {
+      "type": "object",
+      "description": "Replay result",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "success": {"const": true},
+            "verified_steps": {"type": "integer", "minimum": 0},
+            "final_state_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "mismatches": {"type": "array", "items": {}}
+          },
+          "required": ["success", "verified_steps"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "success": {"const": false},
+            "failed_at_step": {"type": "integer", "minimum": 0},
+            "reason": {
+              "type": "string",
+              "enum": [
+                "state_hash_mismatch",
+                "chain_discontinuity",
+                "registry_mismatch",
+                "action_mismatch"
+              ]
+            },
+            "expected_hash": {"type": "string"},
+            "computed_hash": {"type": "string"},
+            "details": {"type": "string"}
+          },
+          "required": ["success", "failed_at_step", "reason"]
+        }
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When replay was performed"
+    },
+    "spec_version": {
+      "type": "string",
+      "description": "NSC specification version"
+    },
+    "schema_version": {
+      "type": "string",
+      "description": "Replay report schema version"
+    }
+  },
+  "additionalProperties": false
+}
